@@ -2,9 +2,13 @@ import requests
 import pytest
 from utility import utils 
 import configparser
+import json
 
 config = configparser.ConfigParser()
 config.read('properties.ini')
+
+with open('testdata.json') as f:
+    test_data = json.load(f)
 
 def test_AllItems(login):
     response_code,response = utils.get_data(login,'product')
@@ -16,7 +20,7 @@ def test_GetID(login):
     id = utils.get_id(login,'uom','dozen')
     print(id)
 
-@pytest.mark.testing
+#@pytest.mark.testing
 @pytest.mark.parametrize('payload',[{"name":"diaper"},{"name":"powder"},{"name":"cream"},{"name":"bottle"},{"name":"medicine"}])
 def test_Creation_Of_Categories(login,payload):
     # data = [{"name":"diaper"},{"name":"powder"},{"name":"cream"},{"name":"bottle"},{"name":"medicine"}]
@@ -26,12 +30,18 @@ def test_Creation_Of_Categories(login,payload):
     response_code,response_data = utils.post_data(login,'categories',payload)
     assert response_code == 201, f"failed, beacuse we are expecting 201 but got {response_code}"
 
-#@pytest.mark.testing
+@pytest.mark.testing
 def test_Update_Categories(login):
-    data = {'name':'powder1'}
-    powder_Id = utils.get_id(login,'categories','diaper')
-    response_code,response = utils.update_with_id(login,'categories',powder_Id,data)
-    assert response_code == 200, f"failed because we are expecting 200 but got {response_code}"
+    #with hardcoaded data
+    # data = {'name':'powder1'}
+    # powder_Id = utils.get_id(login,'categories','diaper')
+    # response_code,response = utils.update_with_id(login,'categories',powder_Id,data)
+    # assert response_code == 200, f"failed because we are expecting 200 but got {response_code}"
+    #with data from json
+    Id = utils.get_id(login,'categories','powder')
+    response_code,response = utils.update_with_id(login,'categories',Id,test_data["update_category"][0]["payload"])
+    assert response_code == test_data['update_category'][0]['expected_status']
+    
 
 #@pytest.mark.testing
 def test_Delete_data(login):

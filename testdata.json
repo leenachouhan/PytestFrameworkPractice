@@ -1,0 +1,43 @@
+{
+  "create_category": [
+    {
+      "payload": {"name": "diaper"},
+      "expected_status": 201
+    },
+    {
+      "payload": {"name": ""},
+      "expected_status": 400
+    }
+  ],
+  "update_category":[
+    {
+    
+        "payload": {"name":"diaper"},
+        "expected_status": 200
+    }
+  ],
+    
+  "create_uom": [
+    {
+      "payload": {"name": "Dozen"},
+      "expected_status": 201
+    }
+  ],
+
+  "update_uom": [
+    {
+      "payload": {"name": "kg"},
+      "expected_status": 200
+    }
+  ],
+
+  "create_item": [
+    {
+      "payload": {
+        "quantity": 6,
+        "date": "12/30"
+      },
+      "expected_status": 201
+    }
+  ]
+}
