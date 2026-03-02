@@ -3,22 +3,14 @@ import pytest
 from utility import utils 
 import configparser
 import json
+import items
+import logging as logger
 
 config = configparser.ConfigParser()
 config.read('properties.ini')
 
 with open('testdata.json') as f:
     test_data = json.load(f)
-
-def test_AllItems(login):
-    response_code,response = utils.get_data(login,'product')
-    print(response)
-    assert response_code == 200
-
-
-def test_GetID(login):
-    id = utils.get_id(login,'uom','dozen')
-    print(id)
 
 #@pytest.mark.testing
 @pytest.mark.parametrize('payload',[{"name":"diaper"},{"name":"powder"},{"name":"cream"},{"name":"bottle"},{"name":"medicine"}])
@@ -32,7 +24,7 @@ def test_Creation_Of_Categories(login,payload):
 
 @pytest.mark.testing
 def test_Update_Categories(login):
-    #with hardcoaded data
+    # with hardcoaded data
     # data = {'name':'powder1'}
     # powder_Id = utils.get_id(login,'categories','diaper')
     # response_code,response = utils.update_with_id(login,'categories',powder_Id,data)
@@ -63,11 +55,15 @@ def test_Update_uom(login):
     assert response_code == 200, f"failed because we are expecting 200 and got {response_code}"
 
 @pytest.mark.item
-def test_Create_Item(login):
-    cafe_id = utils.get_id(login,'cafe','durga')
-    product_id = utils.get_id(login,'product','mango')
-    uom_id = utils.get_id(login,'uom','kg')
-    data = {"cafe_id": cafe_id,"product_id":product_id,"uom_id":uom_id,"quantity":6,"date":"12/30"}
-    response_code,response = utils.post_data(login,'items',data)
-    assert response_code == 201, f"failed because we are expecting 201 and got {response_code}"
+def test_add_item_with_quantity_6(login):
+    logger.info("test_add_item_with_quantity_6")
+    response_code,response = items.create_item(login,'durga','mango','kg',6)
+    assert response_code == 201, f"item creation failed: because we are expecting 201 and got {response_code}"
+    id = response['id']
+    data = items.get_item(login,87658)
+    print(data)
+    assert data is not None, f"item not found after creation: not getting data as id not found, getting {data} in return"
 
+
+
+#@pytest.mark.paramaterize('input,outpu,msg',[({'name':'leena'},200,"cate created")])

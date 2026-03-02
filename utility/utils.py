@@ -8,10 +8,13 @@ from conftest import *
 config = configparser.ConfigParser()
 config.read('/home/lagnesh/Desktop/pytest/properties.ini')
 
-def get_data(login,endpoint):
+def get_data_by_id(login,endpoint,id):
     header = {'authorization':f"Bearer {login}",'Content-Type':'application/json'}
     response = requests.get(config['api']['base_url2']+config['endpoint'][endpoint],headers=header)
-    return response.status_code, response.json()
+    for i in response.json():
+        if i['id'] == id:
+            return i
+    
 
 def get_id(login,endpoint,name):
     header = {'authorization':f"Bearer {login}",'Content-Type':'application/json'}
