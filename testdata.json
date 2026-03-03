@@ -7,12 +7,20 @@
     {
       "payload": {"name": ""},
       "expected_status": 400
+    },
+    {
+        "payload": {"name": "medicine"},
+        "expected_status": 201
+    },
+    {
+        "payload": {"name": "vegetable"},
+        "expected_status": 201
     }
   ],
   "update_category":[
     {
     
-        "payload": {"name":"diaper"},
+        "payload": {"name":"teddy_diaper"},
         "expected_status": 200
     }
   ],
@@ -21,6 +29,18 @@
     {
       "payload": {"name": "Dozen"},
       "expected_status": 201
+    },
+    {
+        "payload": {"name": "KG"},
+        "expected_status": 201
+    },
+    {
+        "payload": {"name": "Unit"},
+        "expected_status": 201
+    },
+    {
+        "payload": {"name": ""},
+        "expected_status": 400
     }
   ],
 
